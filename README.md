@@ -1,7 +1,7 @@
 # fumINO 🚭
 
 App Android per smettere di fumare: contatore in tempo reale, **53 obiettivi**,
-**16 tappe di recupero della salute** (ognuna con la data esatta in cui arriva),
+**24 tappe di recupero della salute** (ognuna con la data esatta in cui arriva e la fonte scientifica),
 pronto soccorso anti-voglia con respirazione guidata e una carica motivazionale
 ogni giorno.
 
@@ -22,14 +22,32 @@ che esce dal telefono.
 - Frase del giorno e pulsante SOS sempre a portata di pollice
 
 ### ❤️ Salute — *quando si ripristinano le cose*
-Cronologia completa del recupero, da 20 minuti a 15 anni: battito e pressione,
-monossido di carbonio, gusto e olfatto, bronchi, circolazione, funzione
-polmonare, ciglia bronchiali, rischio cardiaco, ictus, tumore al polmone.
+Cronologia completa del recupero in **24 tappe**, da 20 minuti a 20 anni: battito
+e pressione, monossido di carbonio, gusto e olfatto, bronchi, sonno, ferite e
+interventi chirurgici, pelle, umore, vita sessuale, funzione polmonare, valori
+del sangue, ciglia bronchiali, rischio cardiaco, invecchiamento dei polmoni,
+ictus, infiammazione, tumore al polmone, mortalità generale.
+
 Per ogni tappa vedi:
 - la **data e l'ora esatte** in cui è stata raggiunta, oppure in cui la
   raggiungerai (e quanto manca),
 - la percentuale di avvicinamento,
-- cosa sta succedendo nel corpo, in parole semplici.
+- cosa sta succedendo nel corpo, in parole semplici,
+- **la fonte**: linee guida di OMS, NHS, American Cancer Society e US Surgeon
+  General, oppure lo studio da cui arriva il dato.
+
+Le tappe basate su singoli studi citano il lavoro specifico, per esempio:
+- **6 settimane — umore, ansia e stress migliorano**: meta-analisi di 26 studi,
+  *Taylor et al., BMJ 2014;348:g1151*
+- **4 settimane — meno complicanze chirurgiche**: studio OMS / WFSA /
+  Università di Newcastle, 2020
+- **2 anni — i polmoni invecchiano più lentamente**: *Lung Health Study*
+  (Anthonisen et al.), 28 ml/anno di FEV1 persi contro 62 di chi continua
+- **5 anni — infiammazione tornata normale**: fibrinogeno, PCR e globuli bianchi
+  (*Northwick Park Heart Study*, *MONICA*, analisi NHANES III su PLOS Medicine)
+
+In fondo alla scheda c'è l'elenco completo delle fonti, con l'avvertenza che si
+tratta di medie di popolazione e non di un parere medico.
 
 ### 🏆 Obiettivi
 53 traguardi in quattro categorie, ognuno con **la data di sblocco prevista o
@@ -121,8 +139,11 @@ app/src/main/java/com/fumino/app/
 
 ## Note
 
-I tempi di recupero della salute seguono le indicazioni di OMS, NHS e American
-Cancer Society. Il risparmio, le sigarette evitate e il tempo di vita guadagnato
+I tempi di recupero della salute seguono le indicazioni di OMS, NHS, American
+Cancer Society e US Surgeon General, più studi peer-reviewed citati tappa per
+tappa dentro l'app (BMJ 2014 per la salute mentale, Lung Health Study per la
+funzione polmonare, Nature 2020 per la rigenerazione dell'epitelio bronchiale,
+NEJM 2013 per la mortalità). Il risparmio, le sigarette evitate e il tempo di vita guadagnato
 (≈ 11 minuti per sigaretta) sono stime basate sui dati che inserisci.
 L'app non sostituisce il parere del medico: se puoi, affianca a questo percorso
 un supporto sanitario, raddoppia le probabilità di farcela.

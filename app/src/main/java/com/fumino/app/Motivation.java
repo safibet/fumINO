@@ -107,7 +107,12 @@ public final class Motivation {
             {"🧠", "La dipendenza è chimica, non morale", "Se hai ricadute non sei debole: la nicotina agisce sui circuiti della ricompensa."},
             {"🔁", "Servono più tentativi", "In media servono diversi tentativi per smettere davvero: ogni tentativo aumenta le probabilità."},
             {"📉", "Le voglie diminuiscono", "Dopo la prima settimana la frequenza delle voglie cala in modo netto."},
-            {"👶", "Fumo passivo", "Smettere protegge anche chi ti sta accanto: non esiste una soglia sicura di fumo passivo."}
+            {"👶", "Fumo passivo", "Smettere protegge anche chi ti sta accanto: non esiste una soglia sicura di fumo passivo."},
+            {"\uD83E\uDDEC", "I polmoni si ripopolano di cellule sane", "Uno studio su Nature (Yoshida et al., 2020) ha scoperto che chi smette fa ripartire l'epitelio bronchiale da cellule \"dormienti\" rimaste intatte: negli ex fumatori sono quattro volte più frequenti che in chi fuma ancora. Vale anche dopo decenni di sigarette."},
+            {"\uD83D\uDE42", "Smettere migliora l'umore", "Una meta-analisi di 26 studi sul BMJ (Taylor, 2014) mostra che dopo sei settimane ansia, depressione e stress sono più bassi rispetto a chi continua a fumare: l'effetto è paragonabile a quello di un antidepressivo."},
+            {"\u23F3", "Smettere prima dei 40 anni", "Chi smette prima dei 40 anni evita circa il 90% del rischio di morte in più legato al fumo e guadagna in media quasi dieci anni di vita (Jha et al., NEJM 2013)."},
+            {"\uD83E\uDE7A", "Prima di un'operazione", "Secondo l'OMS ogni settimana senza fumo dopo le prime quattro migliora del 19% l'esito di un intervento chirurgico, e le complicazioni della ferita calano di circa un terzo."},
+            {"\uD83C\uDFC6", "Dopo vent'anni", "A vent'anni dall'ultima sigaretta il rischio di morire per cause legate al fumo torna pari a quello di chi non ha mai fumato (American Cancer Society)."}
     };
 
     /** Frase del giorno: stabile per 24 ore, diversa ogni giorno. */

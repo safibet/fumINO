@@ -299,8 +299,18 @@ public final class Cards {
             card.addView(bar, bl);
         }
 
-        final TextView detail = Theme.text(a, h.detail, 13.5f, Theme.MUTED, Theme.regular());
+        final LinearLayout detail = Theme.col(a);
         detail.setVisibility(View.GONE);
+        detail.addView(Theme.text(a, h.detail, 13.5f, Theme.MUTED, Theme.regular()), Theme.matchW());
+        detail.addView(Theme.space(a, 10));
+        LinearLayout src = Theme.col(a);
+        src.setBackground(Theme.roundRect(a, 12, Theme.BG_SOFT));
+        int sp = Theme.dp(a, 10);
+        src.setPadding(sp, sp, sp, sp);
+        src.addView(Theme.label(a, "Fonte"), Theme.matchW());
+        src.addView(Theme.text(a, h.source, 11.5f, Theme.MUTED, Theme.regular()),
+                Theme.margins(Theme.matchW(), a, 0, 4, 0, 0));
+        detail.addView(src, Theme.matchW());
         card.addView(detail, Theme.margins(Theme.matchW(), a, 0, 12, 0, 0));
 
         card.setOnClickListener(new View.OnClickListener() {
