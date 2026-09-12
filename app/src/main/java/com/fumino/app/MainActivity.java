@@ -75,7 +75,7 @@ public class MainActivity extends Activity {
 
         select(getIntent() != null ? getIntent().getIntExtra("tab", 0) : 0);
         askNotificationPermission();
-        Notifications.schedule(this);
+        Notifications.scheduleAll(this);
     }
 
     // --------------------------------------------------------- navigazione
@@ -135,6 +135,8 @@ public class MainActivity extends Activity {
     public void refreshAll() {
         for (Screen s : screens) s.rebuild();
         select(current);
+        // le date dei traguardi cambiano: riprogrammiamo gli avvisi
+        Notifications.scheduleMilestones(this);
     }
 
     // -------------------------------------------------------- ciclo di vita
@@ -146,6 +148,7 @@ public class MainActivity extends Activity {
         handler.removeCallbacks(ticker);
         handler.post(ticker);
         checkNewGoals(true);
+        Notifications.scheduleAll(this);
     }
 
     @Override
@@ -209,6 +212,50 @@ public class MainActivity extends Activity {
 
     public void shareProgress() {
         Ui.share(this, Ui.progressText(p));
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int code, String[] perms, int[] results) {
+        super.onRequestPermissionsResult(code, perms, results);
+        if (code == 42) {
+            Notifications.scheduleAll(this);
+            refreshAll();
+        }
+    }
+
+    /** Chiede il permesso di notifica o apre le impostazioni di sistema. */
+    public void enableNotifications() {
+        if (Build.VERSION.SDK_INT >= 33
+                && checkSelfPermission("android.permission.POST_NOTIFICATIONS")
+                != PackageManager.PERMISSION_GRANTED
+                && shouldShowRequestPermissionRationale("android.permission.POST_NOTIFICATIONS")) {
+            requestPermissions(new String[]{"android.permission.POST_NOTIFICATIONS"}, 42);
+            return;
+        }
+        if (Build.VERSION.SDK_INT >= 33
+                && checkSelfPermission("android.permission.POST_NOTIFICATIONS")
+                != PackageManager.PERMISSION_GRANTED) {
+            // già rifiutato in passato: si passa dalle impostazioni
+            openNotificationSettings();
+            return;
+        }
+        openNotificationSettings();
+    }
+
+    private void openNotificationSettings() {
+        try {
+            Intent i;
+            if (Build.VERSION.SDK_INT >= 26) {
+                i = new Intent(android.provider.Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                        .putExtra(android.provider.Settings.EXTRA_APP_PACKAGE, getPackageName());
+            } else {
+                i = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                        .setData(android.net.Uri.parse("package:" + getPackageName()));
+            }
+            startActivity(i);
+        } catch (Exception e) {
+            Ui.toast(this, "Apri Impostazioni \u2192 App \u2192 fumINO \u2192 Notifiche");
+        }
     }
 
     private void askNotificationPermission() {

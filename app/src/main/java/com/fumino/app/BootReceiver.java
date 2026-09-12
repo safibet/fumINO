@@ -4,12 +4,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-/** Riprogramma il promemoria dopo il riavvio del telefono. */
+/** Riprogramma notifiche e avvisi dopo il riavvio del telefono. */
 public class BootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context c, Intent i) {
         try {
-            Notifications.schedule(c);
+            Notifications.scheduleAll(c);
         } catch (Exception ignored) {
         }
     }

@@ -108,15 +108,35 @@ public class ProfileScreen extends Screen {
 
         c.addView(Theme.space(act, 12));
 
-        // ------------------------------------------------------ promemoria
-        c.addView(Cards.sectionTitle(act, "Promemoria quotidiano"), Theme.matchW());
+        // ------------------------------------------------------- notifiche
+        c.addView(Cards.sectionTitle(act, "Notifiche"), Theme.matchW());
         c.addView(Theme.space(act, 10));
 
+        if (!Notifications.allowed(act)) {
+            LinearLayout warn = Theme.cardTinted(act, Theme.RED);
+            warn.addView(Theme.text(act, "\u26A0\uFE0F  Notifiche disattivate", 15, Theme.TEXT, Theme.bold()));
+            warn.addView(Theme.text(act, "Android sta bloccando le notifiche di fumINO: senza permesso "
+                            + "non riceverai né la carica quotidiana né gli avvisi dei traguardi.",
+                    13, Theme.MUTED, Theme.regular()), Theme.margins(Theme.matchW(), act, 0, 6, 0, 0));
+            warn.addView(Theme.space(act, 12));
+            TextView fix = Theme.buttonOutline(act, "Attiva le notifiche", Theme.RED);
+            fix.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    act.enableNotifications();
+                }
+            });
+            warn.addView(fix, Theme.matchW());
+            c.addView(warn, Theme.margins(Theme.matchW(), act, 0, 0, 0, 12));
+        }
+
         LinearLayout rem = Theme.card(act);
+
+        // carica quotidiana
         LinearLayout switchRow = Theme.row(act);
         LinearLayout col = Theme.col(act);
-        col.addView(Theme.text(act, "Notifica motivazionale", 14.5f, Theme.TEXT, Theme.medium()));
-        col.addView(Theme.text(act, "Una carica al giorno con i tuoi progressi", 12.5f,
+        col.addView(Theme.text(act, "Carica quotidiana", 14.5f, Theme.TEXT, Theme.medium()));
+        col.addView(Theme.text(act, "Una frase e i tuoi progressi, ogni giorno", 12.5f,
                 Theme.MUTED, Theme.regular()), Theme.margins(Theme.matchW(), act, 0, 2, 0, 0));
         switchRow.addView(col, new LinearLayout.LayoutParams(0,
                 ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
@@ -127,18 +147,17 @@ public class ProfileScreen extends Screen {
             @Override
             public void onCheckedChanged(android.widget.CompoundButton b, boolean on) {
                 p.setReminderOn(on);
-                Notifications.schedule(act);
-                Ui.toast(act, on ? "Promemoria attivo" : "Promemoria disattivato");
+                Notifications.scheduleAll(act);
+                Ui.toast(act, on ? "Carica quotidiana attiva" : "Carica quotidiana disattivata");
             }
         });
         switchRow.addView(sw);
         rem.addView(switchRow, Theme.matchW());
-        rem.addView(Theme.divider(act));
 
         final TextView timeRow = Theme.text(act,
-                "⏰  Ogni giorno alle " + String.format(Fmt.IT, "%02d:%02d",
+                "\u23F0  Ogni giorno alle " + String.format(Fmt.IT, "%02d:%02d",
                         p.reminderHour(), p.reminderMinute()), 14.5f, Theme.GREEN, Theme.medium());
-        timeRow.setPadding(0, Theme.dp(act, 6), 0, Theme.dp(act, 6));
+        timeRow.setPadding(0, Theme.dp(act, 10), 0, Theme.dp(act, 4));
         timeRow.setClickable(true);
         timeRow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,14 +167,63 @@ public class ProfileScreen extends Screen {
                             @Override
                             public void onTimeSet(TimePicker view, int h, int m) {
                                 p.setReminderTime(h, m);
-                                Notifications.schedule(act);
-                                timeRow.setText("⏰  Ogni giorno alle "
+                                Notifications.scheduleAll(act);
+                                timeRow.setText("\u23F0  Ogni giorno alle "
                                         + String.format(Fmt.IT, "%02d:%02d", h, m));
                             }
                         }, p.reminderHour(), p.reminderMinute(), true).show();
             }
         });
         rem.addView(timeRow, Theme.matchW());
+        rem.addView(Theme.divider(act));
+
+        // avvisi dei traguardi
+        LinearLayout goalRow = Theme.row(act);
+        LinearLayout gcol = Theme.col(act);
+        gcol.addView(Theme.text(act, "Avvisi dei traguardi", 14.5f, Theme.TEXT, Theme.medium()));
+        gcol.addView(Theme.text(act, "Ti avviso quando sblocchi un obiettivo o quando il corpo "
+                        + "raggiunge una tappa di recupero", 12.5f, Theme.MUTED, Theme.regular()),
+                Theme.margins(Theme.matchW(), act, 0, 2, 0, 0));
+        goalRow.addView(gcol, new LinearLayout.LayoutParams(0,
+                ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+
+        final TextView nextNotif = Theme.text(act, "", 12.5f, Theme.GREEN, Theme.medium());
+        Switch swGoals = new Switch(act);
+        swGoals.setChecked(p.milestoneNotifOn());
+        swGoals.setOnCheckedChangeListener(new android.widget.CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(android.widget.CompoundButton b, boolean on) {
+                p.setMilestoneNotifOn(on);
+                Notifications.scheduleAll(act);
+                nextNotif.setText(nextNotifText());
+                Ui.toast(act, on ? "Avvisi dei traguardi attivi" : "Avvisi dei traguardi disattivati");
+            }
+        });
+        goalRow.addView(swGoals);
+        rem.addView(goalRow, Theme.matchW());
+
+        nextNotif.setText(nextNotifText());
+        nextNotif.setPadding(0, Theme.dp(act, 10), 0, Theme.dp(act, 4));
+        rem.addView(nextNotif, Theme.matchW());
+        rem.addView(Theme.divider(act));
+
+        TextView test = Theme.text(act, "\uD83D\uDD14  Invia una notifica di prova", 14.5f,
+                Theme.BLUE, Theme.medium());
+        test.setPadding(0, Theme.dp(act, 6), 0, Theme.dp(act, 6));
+        test.setClickable(true);
+        test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!Notifications.allowed(act)) {
+                    act.enableNotifications();
+                    return;
+                }
+                Notifications.showTest(act);
+                Ui.toast(act, "Notifica inviata");
+            }
+        });
+        rem.addView(test, Theme.matchW());
+
         c.addView(rem, Theme.matchW());
         c.addView(Theme.space(act, 22));
 
@@ -228,6 +296,29 @@ public class ProfileScreen extends Screen {
         c.addView(about, Theme.matchW());
 
         return Ui.screen(act, c);
+    }
+
+    /** Descrive il prossimo avviso in programma. */
+    private String nextNotifText() {
+        if (!p.milestoneNotifOn()) return "Nessun avviso in programma";
+        long now = System.currentTimeMillis();
+        String title = null;
+        long when = Long.MAX_VALUE;
+        Goal g = Goal.next(p);
+        if (g != null && g.when(p) > now && g.when(p) < when) {
+            when = g.when(p);
+            title = "\uD83C\uDFC6 " + g.title;
+        }
+        Health h = Health.next(p.elapsed());
+        if (h != null) {
+            long w = h.date(p.quitAt());
+            if (w > now && w < when) {
+                when = w;
+                title = h.emoji + " " + h.title;
+            }
+        }
+        if (title == null) return "Hai raggiunto tutti i traguardi previsti";
+        return "Prossimo avviso: " + title + " \u00B7 " + Fmt.dateTime(when);
     }
 
     private void addStat(LinearLayout box, String emoji, String label, String value) {

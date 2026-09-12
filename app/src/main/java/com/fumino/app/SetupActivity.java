@@ -208,7 +208,7 @@ public class SetupActivity extends Activity {
         p.setCigsPerPack(pack);
         p.setPricePerPack(pr);
         p.setSetupDone(true);
-        Notifications.schedule(this);
+        Notifications.scheduleAll(this);
 
         Intent i = new Intent(this, MainActivity.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

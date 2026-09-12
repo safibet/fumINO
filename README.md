@@ -54,9 +54,21 @@ sblocchi uno e condivisione del traguardo.
 - Consigli immediati, i tuoi motivi e quello che perderesti cedendo
 - "Ce l'ho fatta": ogni voglia superata diventa un obiettivo
 
+### 🔔 Notifiche
+- **Avvisi automatici sui traguardi**: quando sblocchi un obiettivo o quando il
+  corpo raggiunge una tappa di recupero arriva una notifica, anche ad app chiusa
+  e dopo un riavvio del telefono. Gli avvisi vengono riprogrammati da soli man
+  mano che le date cambiano (se correggi i dati o riparti da capo).
+- **Carica quotidiana** all'ora che scegli: frase del giorno, sigarette evitate,
+  soldi risparmiati, prossimo obiettivo e prossimo recupero.
+- Due interruttori separati nel profilo, l'orario personalizzabile, la riga
+  "prossimo avviso" con data e ora, e un pulsante per inviare una **notifica di
+  prova**. Se Android sta bloccando le notifiche, l'app te lo dice e ti porta
+  direttamente all'impostazione da attivare.
+
 ### ⚙️ Profilo
 Dati modificabili (data dell'ultima sigaretta, sigarette al giorno, prezzo del
-pacchetto), promemoria quotidiano all'ora che scegli, statistiche personali,
+pacchetto), gestione delle notifiche, statistiche personali,
 condivisione dei progressi e — senza giudizio — il pulsante per ripartire dopo
 una ricaduta, che conserva il tuo record personale.
 
@@ -101,6 +113,7 @@ app/src/main/java/com/fumino/app/
 ├── SetupActivity.java       prima configurazione
 ├── Goal.java / Health.java  obiettivi e tappe di salute (dati e calcoli)
 ├── Motivation.java          frasi, consigli, curiosità
+├── Notifications.java       carica quotidiana e avvisi dei traguardi
 ├── Prefs.java               stato e statistiche (SharedPreferences)
 ├── Theme.java / Cards.java  design system e componenti
 └── RingView, BarView, BreathView   viste disegnate a mano

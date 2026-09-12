@@ -31,6 +31,8 @@ public class Prefs {
     private static final String K_BEST = "best_streak";
     private static final String K_SEEN_GOALS = "seen_goals";
     private static final String K_REMINDER = "reminder_on";
+    private static final String K_MILESTONE_NOTIF = "milestone_notif_on";
+    private static final String K_SCHEDULED = "scheduled_milestones";
     private static final String K_REMINDER_H = "reminder_h";
     private static final String K_REMINDER_M = "reminder_m";
     private static final String K_FIRST_RUN = "first_run";
@@ -234,6 +236,24 @@ public class Prefs {
 
     public void setReminderOn(boolean v) {
         sp.edit().putBoolean(K_REMINDER, v).apply();
+    }
+
+    /** Avvisi automatici quando si sblocca un obiettivo o una tappa di salute. */
+    public boolean milestoneNotifOn() {
+        return sp.getBoolean(K_MILESTONE_NOTIF, true);
+    }
+
+    public void setMilestoneNotifOn(boolean v) {
+        sp.edit().putBoolean(K_MILESTONE_NOTIF, v).apply();
+    }
+
+    /** Traguardi per cui è già programmata una sveglia. */
+    public Set<String> scheduledMilestones() {
+        return new HashSet<>(sp.getStringSet(K_SCHEDULED, Collections.<String>emptySet()));
+    }
+
+    public void setScheduledMilestones(Set<String> keys) {
+        sp.edit().putStringSet(K_SCHEDULED, new HashSet<>(keys)).apply();
     }
 
     public int reminderHour() {
