@@ -9,12 +9,12 @@ APP="$ROOT/app/src/main"
 BUILD="$ROOT/build"
 OUT="$ROOT/dist/fumINO.apk"
 KEYSTORE="${FUMINO_KEYSTORE:-$ROOT/.keystore/fumino.jks}"
-KEYPASS="${FUMINO_KEYPASS:-fumino2024}"
+PASSFILE="$(dirname "$KEYSTORE")/password.txt"
 
 MIN_SDK=24
 TARGET_SDK=34
-VERSION_CODE="${VERSION_CODE:-1}"
-VERSION_NAME="${VERSION_NAME:-1.0}"
+VERSION_CODE="${VERSION_CODE:-3}"
+VERSION_NAME="${VERSION_NAME:-1.3}"
 
 if [ ! -x "$SDK/aapt2" ] || [ ! -f "$SDK/android.jar" ] || [ ! -f "$SDK/dx.jar" ]; then
   "$ROOT/tools/fetch-toolchain.sh"
@@ -62,12 +62,25 @@ fi
 python3 "$ROOT/tools/zipalign.py" "$BUILD/unsigned.apk" "$BUILD/aligned.apk"
 
 echo "==> 6/6 firma"
+# La password della chiave non sta nel repository: vive accanto alla chiave,
+# in .keystore/ (ignorato da git), oppure in $FUMINO_KEYPASS.
+if [ -n "${FUMINO_KEYPASS:-}" ]; then
+  KEYPASS="$FUMINO_KEYPASS"
+elif [ -f "$PASSFILE" ]; then
+  KEYPASS="$(cat "$PASSFILE")"
+else
+  KEYPASS="$(head -c 24 /dev/urandom | base64 | tr -d '/+=' | head -c 24)"
+  printf '%s' "$KEYPASS" > "$PASSFILE"
+  chmod 600 "$PASSFILE"
+fi
+
 if [ ! -f "$KEYSTORE" ]; then
   keytool -genkeypair -v -keystore "$KEYSTORE" -alias fumino \
     -keyalg RSA -keysize 2048 -validity 10000 \
     -storepass "$KEYPASS" -keypass "$KEYPASS" \
     -dname "CN=fumINO, OU=App, O=fumINO, L=Italia, C=IT" >/dev/null 2>&1
-  echo "    nuova chiave creata in $KEYSTORE (conservala per pubblicare aggiornamenti)"
+  echo "    nuova chiave creata in $KEYSTORE, password in $PASSFILE"
+  echo "    CONSERVA ENTRAMBI: senza, gli aggiornamenti non si installano sopra l'app esistente"
 fi
 java -jar "$SDK/apksigner.jar" sign \
   --ks "$KEYSTORE" --ks-key-alias fumino \

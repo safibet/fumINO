@@ -110,9 +110,12 @@ apksigner) viene scaricata da pacchetti pubblici.
 ./tools/build-apk.sh           # produce dist/fumINO.apk firmato
 ```
 
-Serve solo un JDK (17 o 21) e Python 3. La chiave di firma viene creata al primo
-build in `.keystore/fumino.jks`: **conservala**, serve per installare gli
-aggiornamenti sopra la versione già installata.
+Serve solo un JDK (17 o 21) e Python 3. Al primo build vengono creati
+`.keystore/fumino.jks` e la sua password in `.keystore/password.txt`, entrambi
+fuori dal repository: **conservali**. Servono per firmare gli aggiornamenti in
+modo che si installino sopra la versione già presente sul telefono; con una
+chiave diversa Android rifiuta l'aggiornamento e bisogna disinstallare l'app,
+perdendo i dati.
 
 In alternativa, con Android Studio: togli l'attributo `package="com.fumino.app"`
 da `app/src/main/AndroidManifest.xml` e usa il progetto Gradle incluso.

@@ -288,7 +288,7 @@ public class ProfileScreen extends Screen {
         c.addView(reset, Theme.matchW());
         c.addView(Theme.space(act, 24));
 
-        TextView about = Theme.text(act, "fumINO 1.0 • fatto per chi vuole smettere davvero\n"
+        TextView about = Theme.text(act, "fumINO 1.3 • fatto per chi vuole smettere davvero\n"
                 + "Nessun account, nessuna pubblicità, nessun dato che esce dal telefono.\n"
                 + "Le informazioni sulla salute seguono le linee guida OMS, NHS e American Cancer Society "
                 + "e non sostituiscono il parere del medico.", 11.5f, Theme.DIM, Theme.regular());

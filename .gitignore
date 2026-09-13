@@ -6,3 +6,6 @@ build/
 local.properties
 .idea/
 *.idsig
+*.jks
+*.keystore
+.keystore/
